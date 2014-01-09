@@ -5,6 +5,8 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include "config.h"
 #include "usart.h"
 
@@ -95,7 +97,7 @@ int main(void)
                     
                     /* translate the phase length to bit value and shift into our final value */
                     if(phase_len >= IR_BIT_1) {
-                        value |= (1 << x);
+                        value |= (1 << (IR_BITS - x));
                     } else if(phase_len >= IR_BIT_0) {
                        /* nothing needed for this bit to remain 0 */
                     }
@@ -110,11 +112,19 @@ int main(void)
                 
                 /* if we successfully received the IR data we transmit through usart*/
                 if(value != -1) {
-                    usart_tx(value);
-                    usart_tx(value << 8);
-                    usart_tx(value << 16);
-                    usart_tx(value << 24);
+                    char v_str[50] = {0};
+                    ultoa(value, v_str, 10);
+                    
+                    int x;
+                    for(x = 0; x < strlen(v_str); x++) {
+                        usart_tx(v_str[x]);
+                    }
+                    
+                } else {
+                    usart_tx('E');
                 }
+                
+                usart_tx('\n');
                 
                 LED_PORT &= ~_BV(LED_PIN);
             }
