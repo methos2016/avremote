@@ -58,7 +58,6 @@ int main(void)
 
 	while(1) {
 	
-
         /* if we are not in phase and the IR pin is high, we are now in phase,
          * so we reset the timer and start recording how long this phase length is
          */
@@ -105,6 +104,7 @@ int main(void)
                         * as an error and we will ignore it
                         */
                         value = -1;
+                        break;
                     }
                 }
                 
@@ -114,9 +114,6 @@ int main(void)
                     usart_tx(value << 8);
                     usart_tx(value << 16);
                     usart_tx(value << 24);
-
-                } else {
-                    usart_tx('e');
                 }
                 
                 LED_PORT &= ~_BV(LED_PIN);
