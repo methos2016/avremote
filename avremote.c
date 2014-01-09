@@ -118,13 +118,11 @@ int main(void)
                     int x;
                     for(x = 0; x < strlen(v_str); x++) {
                         usart_tx(v_str[x]);
+                        usart_tx('\n');
                     }
                     
-                } else {
-                    usart_tx('E');
-                }
+                }               
                 
-                usart_tx('\n');
                 
                 LED_PORT &= ~_BV(LED_PIN);
             }
