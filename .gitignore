@@ -1,4 +1,5 @@
 *~
 *.hex
 *.elf
-
+.cproject
+.project
